@@ -9,9 +9,10 @@ def home(request):
 def about(request):
   return render (request, 'about.html', {'page_name' : 'About'}) 
 
-
-# Mock Data
-
 def finches_index(request):
   finches = Finch.objects.all()
   return render(request, 'finches/index.html', { 'finches' : finches, 'page_name': 'Finches' }) 
+
+def finch_details(request, finch_id):
+  finch = Finch.objects.get(id=finch_id)
+  return render(request, 'finches/details.html', { 'finch': finch, 'page_name' : 'Details'})
