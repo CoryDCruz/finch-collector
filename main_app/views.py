@@ -25,4 +25,4 @@ finches = [
 ]
 
 def finches_index(request):
-  return render(request, 'finches/index.html', { 'finches' : finches }) 
+  return render(request, 'finches/index.html', { 'finches' : finches, 'page_name': 'Finches' }) 
