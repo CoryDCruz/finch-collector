@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Finch
+from .models import Toy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
 
 # Create your views here.
 def home(request):
@@ -29,4 +32,11 @@ class FinchUpdate(UpdateView):
 class FinchDelete(DeleteView):
   model = Finch
   success_url = '/finches/'
+
+class ToyList(ListView): 
+  model = Toy
+  context_object_name = 'toys'
+
+class ToyDetail(DetailView):
+  model = Toy
 
