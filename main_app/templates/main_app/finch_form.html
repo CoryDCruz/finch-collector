@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action="" method="POST">
+  {% csrf_token %}
+  {{ form }}
+  <input class="btn green" type="submit" value="Add Finch">
+</form>
+
+{% endblock %}
