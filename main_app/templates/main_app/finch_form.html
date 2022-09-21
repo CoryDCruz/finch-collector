@@ -2,10 +2,22 @@
 
 {% block content %}
 
+{% if object %}
+<h2>Edit {{object.name}}</h2>
+{% else %}
+<h2>Add a New Finch</h2>
+{% endif%}
+
 <form action="" method="POST">
   {% csrf_token %}
-  {{ form }}
+  <table>
+    {{ form.as_table }}
+  </table>
+  {% if object %}
+  <input class="btn green" type="submit" value="Edit Finch">
+  {% else %}
   <input class="btn green" type="submit" value="Add Finch">
+  {% endif %}
 </form>
 
 {% endblock %}

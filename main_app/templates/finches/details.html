@@ -7,8 +7,12 @@
   <div class="card-content">
     <span class="card-title">{{ finch.name }}</span>
     <p>Type: {{ finch.type }}</p>
-    <p>Region: {{ finch.region }}</p>
+    <p>Range: {{ finch.region }}</p>
     <p>Age: {{ finch.age }}</p>
+  </div>
+  <div class="card-action">
+    <a href="{% url 'finch_update' finch.id %}">Edit</a>
+    <a href="{% url 'finch_delete' finch.id %}">Delete</a>
   </div>
 </div>
 
