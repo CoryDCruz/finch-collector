@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from .models import Finch
 from .models import Toy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -27,6 +26,15 @@ def finch_details(request, finch_id):
     'page_name' : 'Details',
     'feeding_form' : feeding_form
   })
+
+def add_feeding(request, finch_id):
+  form = FeedingForm(request.POST)
+
+  if form.is_valid():
+    new_feeding = form.save(commit=False)
+    new_feeding.finch_id = finch_id
+    new_feeding.save()
+  return redirect('details', finch_id)
 
 class FinchCreate(CreateView):
   model = Finch
