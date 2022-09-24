@@ -60,7 +60,29 @@
     {% else %}
       <h5>No Toys for {{ finch.name }}</h5>
     {% endif %}
-
+  </div>
+  <div class="col s6">
+    <h3>Available Toys</h3>
+    {% if toys.count %}
+    {% for toy in toys.all %}
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">
+          A <span class="{{ toy.color.lower }}-text">{{ toy.color }}</span> 
+          {{ toy.name }}
+        </span>
+      </div>
+      <div class="card-action">
+        <form action="{% url 'assoc_toy' finch.id toy.id %}" method="POST">
+          {% csrf_token %}
+          <input class="btn" type="submit" value="Add">
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <h5>{{ finch.name }} has all available toys</h5>
+    {% endif %}
   </div>
 </div>
 <script>
