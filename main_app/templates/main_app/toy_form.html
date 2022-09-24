@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if object %}
+<h2>Edit {{object.name}}</h2>
+{% else %}
+<h2>Add a New Toy</h2>
+{% endif%}
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  {% if object %}
+  <input class="btn green" type="submit" value="Edit Toy">
+  {% else %}
+  <input class="btn green" type="submit" value="Add Toy">
+  {% endif %}
+</form>
+
+{% endblock %}
