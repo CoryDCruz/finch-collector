@@ -47,11 +47,11 @@ def assoc_toy(request, finch_id, toy_id):
 
 class FinchCreate(CreateView):
   model = Finch
-  fields = ('age', 'type', 'region')
+  fields = ('name', 'age', 'type', 'region')
 
 class FinchUpdate(UpdateView):
   model = Finch
-  fields = ('age', 'type', 'region')
+  fields = ('name','age', 'type', 'region')
 
 class FinchDelete(DeleteView):
   model = Finch
