@@ -20,6 +20,8 @@ def finches_index(request):
 def finch_details(request, finch_id):
   finch = Finch.objects.get(id=finch_id)
   feeding_form = FeedingForm()
+  toys_finch_doesnt_have = Toy.objects.values_list('id')
+  
   return render(request, 'finches/detail.html', 
   { 
     'finch': finch, 
@@ -38,7 +40,7 @@ def add_feeding(request, finch_id):
 
 class FinchCreate(CreateView):
   model = Finch
-  fields = '__all__'
+  fields = ('age', 'type', 'region')
 
 class FinchUpdate(UpdateView):
   model = Finch
