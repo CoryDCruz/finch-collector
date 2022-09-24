@@ -1,10 +1,13 @@
-from django.shortcuts import render, redirect
-from .models import Finch
-from .models import Toy
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.views.generic.list import ListView
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import redirect, render
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.list import ListView
+
 from .forms import FeedingForm
+from .models import Finch, Toy
+
 
 # Create your views here.
 def home(request):
@@ -14,7 +17,7 @@ def about(request):
   return render (request, 'about.html', {'page_name' : 'About'}) 
 
 def finches_index(request):
-  finches = Finch.objects.all()
+  finches = Finch.objects.filter(user=request.user)
   return render(request, 'finches/index.html', { 'finches' : finches, 'page_name': 'Finches' }) 
 
 def finch_details(request, finch_id):
@@ -44,6 +47,21 @@ def assoc_toy(request, finch_id, toy_id):
   # Finch.objects.get(id=finch_id).toys.remove(toy_id)
   return redirect('details', finch_id)
 
+def signup(request):
+  form = UserCreationForm()
+  error_message = ''
+
+  if request.method == 'POST':
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      user = form.save()
+      login(request, user)
+      return redirect('index')
+    else:
+      error_message = 'invalid credentials'
+  
+  context = {'form' : form, 'error_messages' : error_message}
+  return render(request, 'registration/signup.html', context)
 
 class FinchCreate(CreateView):
   model = Finch
