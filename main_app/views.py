@@ -1,3 +1,5 @@
+import uuid
+import boto3
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -8,8 +10,10 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
 from .forms import FeedingForm
-from .models import Finch, Toy
+from .models import Finch, Photo, Toy
 
+S3_BASE_URL = 'https://s3.us-east-1.amazonaws.com/'
+BUCKET = 'finch-collector-image-assets'
 
 # Create your views here.
 def home(request):
@@ -68,6 +72,23 @@ def signup(request):
   
   context = {'form' : form, 'error_messages' : error_message}
   return render(request, 'registration/signup.html', context)
+
+def add_photo(request, finch_id):
+  photo_file = request.FILES.get('photo-file')
+
+  if photo_file:
+    s3 = boto3.client('s3')
+    key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+    try: 
+      s3.upload_fileobj(photo_file, BUCKET, key)
+      url = f'{S3_BASE_URL}{BUCKET}/{key}'
+      photo = Photo(url=url, finch_id = finch_id)
+      photo.save()
+    except:
+      print('An error occured with uploading to S3')
+  
+  return redirect('details', finch_id = finch_id)
+
 
 class FinchCreate(LoginRequiredMixin, CreateView):
   model = Finch
